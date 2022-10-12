@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Dashboard from "./dashboard";
 
 const Home: NextPage = () => {
-  return <Dashboard />;
+  return <div />;
 };
 
 export default Home;

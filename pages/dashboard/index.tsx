@@ -5,21 +5,14 @@ import Searchbar from "../../components/Searchbar";
 import Sidebar from "../../components/Sidebar";
 import Table from "../../components/Table";
 import { Content } from "./styles";
+import config from "../../config";
 
-const header = ["id", "name"];
+interface Props {
+  header: string[];
+  rows: Record<string, string>[];
+}
 
-const rows = [
-  {
-    id: "1",
-    name: "First",
-  },
-  {
-    id: "2",
-    name: "Second",
-  },
-];
-
-const Dashboard: NextPage = () => {
+const Dashboard: NextPage<Props> = ({ header, rows }: Props) => {
   return (
     <div>
       <Head />
@@ -34,5 +27,26 @@ const Dashboard: NextPage = () => {
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  const url = `${config.api.url}/report?select=*&limit=100`;
+  console.log({ url });
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${config.api.apiKey}`,
+      apiKey: config.api.apiKey,
+    },
+  });
+  const rows = await res.json();
+  const header = Object.keys(rows[0]);
+  console.log(rows);
+
+  return {
+    props: {
+      header,
+      rows,
+    },
+  };
+}
 
 export default Dashboard;
