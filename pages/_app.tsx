@@ -1,4 +1,3 @@
-import "../styles/globals.css";
 import type { AppProps } from "next/app";
 
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -8,6 +7,19 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+
+    color: white;
+    background: ${colors.black1}
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
     box-sizing: border-box;
   }
 `;

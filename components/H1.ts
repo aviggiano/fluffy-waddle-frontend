@@ -3,5 +3,5 @@ import { gray90 } from "../styles/colors";
 
 export default styled.h1`
   font-weight: normal;
-  color: ${`${gray90}`};
+  color: ${gray90};
 `;

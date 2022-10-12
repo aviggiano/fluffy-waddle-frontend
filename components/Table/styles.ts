@@ -5,7 +5,7 @@ export const Container = styled.div`
   min-height: 628px;
   width: 100%;
 
-  background-color: ${`${black1}`};
+  background-color: ${black1};
   border-radius: 8px;
 
   display: flex;
@@ -15,7 +15,7 @@ export const Container = styled.div`
     border-collapse: collapse;
 
     thead {
-      color: ${`${gray04}`};
+      color: ${gray04};
 
       th {
         font-weight: normal;
@@ -24,18 +24,18 @@ export const Container = styled.div`
 
         height: 64px;
 
-        border-bottom: 0.1px solid ${`${gray02}`};
+        border-bottom: 0.1px solid ${gray02};
       }
     }
 
     tbody {
       tr {
-        border-bottom: 0.1px solid ${`${gray02}`};
+        border-bottom: 0.1px solid ${gray02};
 
         height: 64px;
 
         td {
-          color: ${`${gray07}`};
+          color: ${gray07};
 
           width: 100%;
           min-width: 300px;
