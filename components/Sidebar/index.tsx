@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import React from "react";
 import { Container, Content, Item, Subtitle, Title } from "./styles";
@@ -32,30 +33,42 @@ const items = [
   },
 ];
 
-const Sidebar: React.FC = () => (
-  <Container>
-    <Content>
-      <Title>
-        <Image alt="logo" src={logo} width="56px" height="56px" />
-        <div>
-          <span>
-            <b>fluffy-waddle</b>
-          </span>
-        </div>
-      </Title>
-      <Subtitle>DASHBOARDS</Subtitle>
-      {items.map((item, index) => (
-        <Item key={item.name} selected={index === 0}>
-          <Link href={item.href}>
-            <a>
-              {item.image}
-              <span>{item.name}</span>
-            </a>
-          </Link>
-        </Item>
-      ))}
-    </Content>
-  </Container>
-);
+const Sidebar: React.FC = () => {
+  const router = useRouter();
+  const selectedIndex = items.findIndex(
+    (item) => item.href === router.pathname
+  );
+
+  return (
+    <Container>
+      <Content>
+        <Title>
+          <Image alt="logo" src={logo} width="56px" height="56px" />
+          <div>
+            <span>
+              <b>fluffy-waddle</b>
+            </span>
+          </div>
+        </Title>
+        <Subtitle>DASHBOARDS</Subtitle>
+        {items.map((item, index) => (
+          <Item
+            key={item.name}
+            selected={
+              selectedIndex === -1 ? index === 0 : index === selectedIndex
+            }
+          >
+            <Link href={item.href}>
+              <a>
+                {item.image}
+                <span>{item.name}</span>
+              </a>
+            </Link>
+          </Item>
+        ))}
+      </Content>
+    </Container>
+  );
+};
 
 export default Sidebar;

@@ -1,5 +1,12 @@
 import styled from "styled-components";
-import { black1, darkBlue, gray1, lightBlue } from "../../styles/colors";
+import {
+  black1,
+  darkBlue,
+  gray1,
+  gray2,
+  lightBlue,
+  white,
+} from "../../styles/colors";
 
 export const Container = styled.div`
   height: 100vh;
@@ -40,6 +47,7 @@ export const Item = styled.div<Props>`
   border-color: transparent;
 
   background-color: ${(props) => (props.selected ? lightBlue : "unset")};
+  color: ${(props) => (props.selected ? white : gray2)};
   width: 272px;
   margin-left: -12px;
 
@@ -59,7 +67,7 @@ export const Item = styled.div<Props>`
   svg {
     path {
       fill: white;
-      fill: ${(props) => (props.selected ? darkBlue : "white")};
+      fill: ${(props) => (props.selected ? darkBlue : gray1)};
     }
   }
 
