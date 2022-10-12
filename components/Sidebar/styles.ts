@@ -1,16 +1,20 @@
 import styled from "styled-components";
 import {
   black1,
-  darkBlue,
-  gray1,
-  gray2,
-  lightBlue,
+  blue100,
+  gray04,
+  gray07,
+  blue025,
   white,
 } from "../../styles/colors";
 
 export const Container = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 296px;
+
+  position: absolute;
+  left: 0;
+  top: 0;
 
   display: flex;
   flex-direction: column;
@@ -26,14 +30,22 @@ export const Title = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 16px;
+
+  a {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
 `;
 
 export const Subtitle = styled.div`
   margin-top: 24px;
   margin-bottom: 12px;
   font-size: 12px;
-  color: ${gray1};
+  color: ${gray04};
 `;
 
 interface Props {
@@ -46,8 +58,8 @@ export const Item = styled.div<Props>`
   border-radius: 8px;
   border-color: transparent;
 
-  background-color: ${(props) => (props.selected ? lightBlue : "unset")};
-  color: ${(props) => (props.selected ? white : gray2)};
+  background-color: ${(props) => (props.selected ? blue025 : "unset")};
+  color: ${(props) => (props.selected ? white : gray07)};
   width: 272px;
   margin-left: -12px;
 
@@ -67,7 +79,7 @@ export const Item = styled.div<Props>`
   svg {
     path {
       fill: white;
-      fill: ${(props) => (props.selected ? darkBlue : gray1)};
+      fill: ${(props) => (props.selected ? blue100 : gray04)};
     }
   }
 

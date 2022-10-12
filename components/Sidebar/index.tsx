@@ -43,12 +43,14 @@ const Sidebar: React.FC = () => {
     <Container>
       <Content>
         <Title>
-          <Image alt="logo" src={logo} width="56px" height="56px" />
-          <div>
-            <span>
-              <b>fluffy-waddle</b>
-            </span>
-          </div>
+          <Link href="/">
+            <a>
+              <Image alt="logo" src={logo} width="56px" height="56px" />
+              <span>
+                <b>fluffy-waddle</b>
+              </span>
+            </a>
+          </Link>
         </Title>
         <Subtitle>DASHBOARDS</Subtitle>
         {items.map((item, index) => (

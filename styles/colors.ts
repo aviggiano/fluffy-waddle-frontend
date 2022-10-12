@@ -1,7 +1,9 @@
 export const white = "#FFFFFF";
 export const black1 = "#111111";
 export const black2 = "#1C1C1C";
-export const gray1 = "rgba(255,255,255,0.4)";
-export const gray2 = "rgba(255,255,255,0.7)";
-export const lightBlue = "rgba(22,143,255,0.25)";
-export const darkBlue = "rgba(22,143,255,1)";
+export const gray02 = "rgba(255,255,255,0.2)";
+export const gray04 = "rgba(255,255,255,0.4)";
+export const gray07 = "rgba(255,255,255,0.7)";
+export const gray90 = "rgba(255,255,255,0.9)";
+export const blue025 = "rgba(22,143,255,0.25)";
+export const blue100 = "rgba(22,143,255,1)";
