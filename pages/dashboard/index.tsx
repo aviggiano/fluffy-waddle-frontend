@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { createClient } from "@supabase/supabase-js";
 import H1 from "../../components/H1";
 import Head from "../../components/Head";
 import Searchbar from "../../components/Searchbar";
@@ -29,17 +30,11 @@ const Dashboard: NextPage<Props> = ({ header, rows }: Props) => {
 };
 
 export async function getServerSideProps() {
-  const url = `${config.api.url}/report?select=*&limit=100`;
-  console.log({ url });
-  const res = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${config.api.apiKey}`,
-      apiKey: config.api.apiKey,
-    },
-  });
-  const rows = await res.json();
+  const supabase = createClient(config.api.url, config.api.apiKey);
+  const { data } = await supabase.from("statistic").select().range(0, 20);
+
+  const rows = data!;
   const header = Object.keys(rows[0]);
-  console.log(rows);
 
   return {
     props: {

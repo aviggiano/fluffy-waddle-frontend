@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { black1, gray02, gray04, gray07 } from "../../styles/colors";
+import { black2, gray02, gray04, gray07 } from "../../styles/colors";
 
 export const Container = styled.div`
   min-height: 628px;
   width: 100%;
 
-  background-color: ${black1};
+  background-color: ${black2};
   border-radius: 8px;
 
   display: flex;
@@ -13,6 +13,8 @@ export const Container = styled.div`
 
   table {
     border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
 
     thead {
       color: ${gray04};
@@ -37,12 +39,10 @@ export const Container = styled.div`
         td {
           color: ${gray07};
 
-          width: 100%;
-          min-width: 300px;
           padding-left: 24px;
 
           &:nth-child(1) {
-            width: 300px;
+            width: 30px;
           }
         }
       }
