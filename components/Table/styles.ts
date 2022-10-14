@@ -6,6 +6,7 @@ import {
   gray07,
   red,
   yellow,
+  blue070,
 } from "../../styles/colors";
 
 export const Container = styled.div`
@@ -65,13 +66,15 @@ export const Results = styled.div`
 export const Detector = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  gap: 6px;
 `;
 export const Check = styled.div``;
 export const Confidence = styled.div<{ confidence: string }>`
   svg {
     path {
       fill: white;
-      fill: ${(props) => (props.confidence === "Medium" ? yellow : red)};
+      fill: ${(props) => (props.confidence === "High" ? red : yellow)};
     }
   }
 `;
@@ -80,7 +83,12 @@ export const Impact = styled.div<{ impact: string }>`
   svg {
     path {
       fill: white;
-      fill: ${(props) => (props.impact === "Medium" ? yellow : red)};
+      fill: ${(props) =>
+        props.impact === "High"
+          ? red
+          : props.impact === "Medium"
+          ? yellow
+          : blue070};
     }
   }
 `;

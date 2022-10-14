@@ -31,13 +31,15 @@ const formatDetails = (value: string) => (
       ({ check, confidence, impact, id, first_markdown_element }) => (
         <Detector key={id}>
           <Check>{check}</Check>
-          <Confidence confidence={confidence}>
+          <Confidence confidence={confidence} title={confidence}>
             <Circle />
           </Confidence>
-          <Impact impact={impact}>
+          <Impact impact={impact} title={impact}>
             <Triangle />
           </Impact>
-          <Occurrence></Occurrence>
+          <Occurrence>
+            {first_markdown_element.replace(/^.*\/(.*\.com\-|.*\.io\-)?/, "")}
+          </Occurrence>
         </Detector>
       )
     ) || <Detector />}
