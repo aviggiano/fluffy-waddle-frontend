@@ -1,5 +1,12 @@
 import styled from "styled-components";
-import { black2, gray02, gray04, gray07 } from "../../styles/colors";
+import {
+  black2,
+  gray02,
+  gray04,
+  gray07,
+  red,
+  yellow,
+} from "../../styles/colors";
 
 export const Container = styled.div`
   min-height: 628px;
@@ -13,7 +20,7 @@ export const Container = styled.div`
 
   table {
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
     width: 100%;
 
     thead {
@@ -40,10 +47,7 @@ export const Container = styled.div`
           color: ${gray07};
 
           padding-left: 24px;
-
-          &:nth-child(1) {
-            width: 30px;
-          }
+          min-width: 120px;
         }
       }
     }
@@ -52,4 +56,31 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   padding: 24px;
+`;
+
+export const Results = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+export const Detector = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+export const Check = styled.div``;
+export const Confidence = styled.div<{ confidence: string }>`
+  svg {
+    path {
+      fill: white;
+      fill: ${(props) => (props.confidence === "Medium" ? yellow : red)};
+    }
+  }
+`;
+export const Occurrence = styled.div``;
+export const Impact = styled.div<{ impact: string }>`
+  svg {
+    path {
+      fill: white;
+      fill: ${(props) => (props.impact === "Medium" ? yellow : red)};
+    }
+  }
 `;

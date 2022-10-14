@@ -7,3 +7,5 @@ export const gray07 = "rgba(255,255,255,0.7)";
 export const gray90 = "rgba(255,255,255,0.9)";
 export const blue025 = "rgba(22,143,255,0.25)";
 export const blue100 = "rgba(22,143,255,1)";
+export const red = "#c30101";
+export const yellow = "#dbc300";
