@@ -1,13 +1,22 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { createClient } from "@supabase/supabase-js";
+import styled from "styled-components";
 import H1 from "../components/H1";
 import Head from "../components/Head";
 import Searchbar from "../components/Searchbar";
 import Sidebar from "../components/Sidebar";
 import Table from "../components/Table";
-import { Content } from "./styles";
 import config from "../config";
 import { Entity } from "../types";
+
+const Content = styled.div`
+  margin-left: 296px;
+  padding: 24px;
+
+  h1 {
+    text-transform: capitalize;
+  }
+`;
 
 interface Props {
   entity: Entity;
