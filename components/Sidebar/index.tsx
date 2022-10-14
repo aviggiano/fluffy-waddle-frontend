@@ -35,8 +35,8 @@ const items = [
 
 const Sidebar: React.FC = () => {
   const router = useRouter();
-  const selectedIndex = items.findIndex(
-    (item) => item.href === router.pathname
+  const selectedIndex = items.findIndex((item) =>
+    router.asPath.includes(item.href)
   );
 
   return (
