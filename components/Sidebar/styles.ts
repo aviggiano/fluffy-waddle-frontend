@@ -86,4 +86,6 @@ export const Item = styled.div<Props>`
   span {
     text-align: center;
   }
+
+  transition: all 0.15s ease-in-out;
 `;
