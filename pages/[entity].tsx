@@ -33,13 +33,11 @@ const Dashboard: NextPage<Props> = ({ header, rows, entity }: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
-  const entity: Entity = (query.entity as string).substring(
-    0,
-    (query.entity as string).length - 1
-  ) as Entity;
+  const entity: Entity = query.entity as Entity;
+  const table = entity.substring(0, entity.length - 1);
   const supabase = createClient(config.api.url, config.api.apiKey);
-  console.log({ entity });
-  const { data } = await supabase.from(entity).select().range(0, 20);
+  console.log({ entity, table });
+  const { data } = await supabase.from(table).select().range(0, 20);
 
   const rows = data!;
   const header = Object.keys(rows[0]);
@@ -48,6 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       header,
       rows,
+      entity,
     },
   };
 };

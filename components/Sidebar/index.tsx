@@ -13,7 +13,7 @@ import Statistic from "../../public/images/statistic.svg";
 const items = [
   {
     name: "Blockchains",
-    href: "/blockchain",
+    href: "/blockchains",
     image: <Blockchain />,
   },
   {
