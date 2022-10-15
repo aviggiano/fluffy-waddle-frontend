@@ -12,7 +12,7 @@ export const Container = styled.div`
   height: 100%;
   width: 296px;
 
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
 
