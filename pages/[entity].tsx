@@ -9,6 +9,7 @@ import Table from "../components/Table";
 import config from "../config";
 import { Entity } from "../types";
 import Pagination from "../components/Pagination";
+import { PAGINATION_MAX, PAGINATION_MIN } from "../contexts/Query";
 
 const Content = styled.div`
   margin-left: 296px;
@@ -53,8 +54,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
   console.log(query);
 
-  const from = Math.max(Number(query.from || 0), 0);
-  const to = Math.max(Number(query.to || 10), from + 100);
+  const from = Math.max(Number(query.from || 1), 1);
+  const to = Math.max(
+    Math.min(Number(query.to || PAGINATION_MIN), from + PAGINATION_MAX - 1),
+    from + PAGINATION_MIN - 1
+  );
   const search = query.search || "";
 
   const entityRoute: string = query.entity as string;

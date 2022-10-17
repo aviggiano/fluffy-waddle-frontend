@@ -3,19 +3,25 @@ import { Container, Content, Icons, Pages } from "./styles";
 import Left from "../../public/images/left.svg";
 import Right from "../../public/images/right.svg";
 import { useContext, useEffect, useState } from "react";
-import QueryContext from "../../contexts/Query";
+import QueryContext, { PAGINATION_MIN } from "../../contexts/Query";
 import { useRouter } from "next/router";
 
 const Pagination: React.FC = () => {
-  const { page, setPage } = useContext(QueryContext);
+  const [page, setPage] = useState(1);
+  const { setFrom, setTo } = useContext(QueryContext);
   const router = useRouter();
   const [route, setRoute] = useState(router.asPath);
   const refreshData = (newPage: number) => {
+    const from = PAGINATION_MIN * (newPage - 1) + 1;
+    const to = PAGINATION_MIN * newPage;
+
     const route = router.asPath.replace(/\?.*/, "");
     router.push({
       pathname: route,
-      query: { from: 10 * (newPage - 1), to: 10 * newPage },
+      query: { from, to },
     });
+    setFrom(from);
+    setTo(to);
     setPage(newPage);
     setRoute(route);
   };
@@ -25,6 +31,8 @@ const Pagination: React.FC = () => {
       console.log({ url, route });
       const newRoute = url.replace(/\?.*/, "");
       if (newRoute !== route) {
+        setFrom(0);
+        setTo(PAGINATION_MIN);
         setPage(1);
         setRoute(url);
       }
@@ -33,7 +41,7 @@ const Pagination: React.FC = () => {
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
     };
-  }, [route, router.events, setPage]);
+  }, [route, router.events, setFrom, setTo]);
 
   return (
     <Container>
