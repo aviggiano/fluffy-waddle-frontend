@@ -12,9 +12,6 @@ import {
 import { SlitherDetails } from "../../types";
 import { format as formatDate } from "date-fns";
 
-import Triangle from "../../public/images/triangle.svg";
-import Circle from "../../public/images/circle.svg";
-
 interface Props {
   header: string[];
   rows: Record<string, string>[];
@@ -31,12 +28,8 @@ const formatDetails = (value: string) => (
       ({ check, confidence, impact, id, first_markdown_element }) => (
         <Detector key={id}>
           <Check>{check}</Check>
-          <Confidence confidence={confidence} title={confidence}>
-            <Circle />
-          </Confidence>
-          <Impact impact={impact} title={impact}>
-            <Triangle />
-          </Impact>
+          <Confidence confidence={confidence}>{confidence}</Confidence>
+          <Impact impact={impact}>{impact}</Impact>
           <Occurrence>
             {first_markdown_element.replace(/^.*\/(.*\.com\-|.*\.io\-)?/, "")}
           </Occurrence>

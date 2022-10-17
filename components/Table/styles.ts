@@ -6,7 +6,8 @@ import {
   gray07,
   red,
   yellow,
-  blue070,
+  info,
+  optimization,
 } from "../../styles/colors";
 
 export const Container = styled.div`
@@ -62,6 +63,7 @@ export const Content = styled.div`
 export const Results = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 2px;
 `;
 export const Detector = styled.div`
   display: flex;
@@ -71,24 +73,28 @@ export const Detector = styled.div`
 `;
 export const Check = styled.div``;
 export const Confidence = styled.div<{ confidence: string }>`
-  svg {
-    path {
-      fill: white;
-      fill: ${(props) => (props.confidence === "High" ? red : yellow)};
-    }
-  }
+  height: 24px;
+  border-radius: 8px;
+  background-color: ${(props) => (props.confidence === "High" ? red : yellow)};
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
 `;
 export const Occurrence = styled.div``;
 export const Impact = styled.div<{ impact: string }>`
-  svg {
-    path {
-      fill: white;
-      fill: ${(props) =>
-        props.impact === "High"
-          ? red
-          : props.impact === "Medium"
-          ? yellow
-          : blue070};
-    }
-  }
+  height: 24px;
+  border-radius: 8px;
+  background-color: ${(props) =>
+    props.impact === "High"
+      ? red
+      : props.impact === "Medium"
+      ? yellow
+      : props.impact === "Low"
+      ? info
+      : optimization};
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
 `;
