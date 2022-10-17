@@ -8,6 +8,7 @@ import Sidebar from "../components/Sidebar";
 import Table from "../components/Table";
 import config from "../config";
 import { Entity } from "../types";
+import Pagination from "../components/Pagination";
 
 const Content = styled.div`
   margin-left: 296px;
@@ -33,6 +34,7 @@ const Dashboard: NextPage<Props> = ({ header, rows, entity }: Props) => {
         <Content>
           <Searchbar />
           <H1>{entity}</H1>
+          <Pagination />
           <Table header={header} rows={rows} />
         </Content>
       </main>
