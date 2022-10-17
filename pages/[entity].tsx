@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const entity: Entity = query.entity as Entity;
   const table = entity.substring(0, entity.length - 1);
   const supabase = createClient(config.api.url, config.api.apiKey);
-  console.log({ entity, table });
+  console.log({ entity, table, query });
   const { data } = await supabase.from(table).select().range(from, to);
 
   const header = Object.keys(data![0]);

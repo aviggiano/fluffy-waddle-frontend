@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 
 import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { PaginationProvider } from "../contexts/Pagination";
 import * as colors from "../styles/colors";
 
 const GlobalStyle = createGlobalStyle`
@@ -37,7 +38,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <PaginationProvider>
+          <Component {...pageProps} />
+        </PaginationProvider>
       </ThemeProvider>
     </>
   );

@@ -47,7 +47,6 @@ const formatColumn = (row: Record<string, string>, column: string) =>
     : row[column];
 
 const Table: React.FC<Props> = ({ header, rows }: Props) => {
-  console.log(header, rows);
   return (
     <Container>
       <Content>
