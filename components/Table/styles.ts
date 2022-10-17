@@ -68,7 +68,7 @@ export const Results = styled.div`
 export const Detector = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
   gap: 6px;
 `;
 export const Check = styled.div``;
