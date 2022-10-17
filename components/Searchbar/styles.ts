@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { black1 } from "../../styles/colors";
+import { gray07 } from "../../styles/colors";
 
 export const Container = styled.div`
   display: flex;
@@ -14,9 +14,11 @@ export const Content = styled.div`
   gap: 8px;
 
   input {
+    width: 100%;
     font-size: 16px;
     border: none;
     background-color: transparent;
+    color: ${gray07};
 
     &:focus {
       outline: none;

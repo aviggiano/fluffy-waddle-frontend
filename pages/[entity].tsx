@@ -42,19 +42,36 @@ const Dashboard: NextPage<Props> = ({ header, rows, entity }: Props) => {
   );
 };
 
+const SearchEntityColumnMap: Record<Entity, string[]> = {
+  blockchain: ["name"],
+  contract: ["address", "name"],
+  report: [],
+  statistic: [],
+};
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
-  const from = Number(query.from || 0);
-  const to = Number(query.to || 10);
-  const entity: Entity = query.entity as Entity;
-  const table = entity.substring(0, entity.length - 1);
+  console.log(query);
+
+  const from = Math.max(Number(query.from || 0), 0);
+  const to = Math.max(Number(query.to || 10), from + 100);
+  const search = query.search || "";
+
+  const entityRoute: string = query.entity as string;
+  const entity = entityRoute.substring(0, entityRoute.length - 1) as Entity;
+
+  const or = SearchEntityColumnMap[entity]
+    .map((column) => `${column}.ilike.%${search}%`)
+    .join(",");
+
   const supabase = createClient(config.api.url, config.api.apiKey);
-  console.log({ entity, table, query });
-  const { data } = await supabase
-    .from(table)
-    .select()
-    .order("createdAt", { ascending: false })
-    .range(from, to);
+  let select = supabase.from(entity).select();
+  if (or) {
+    select = select.or(or);
+  }
+  select = select.order("createdAt", { ascending: false }).range(from, to);
+
+  const { data } = await select.select();
 
   const header = Object.keys(data![0] || {});
   const rows = data!;

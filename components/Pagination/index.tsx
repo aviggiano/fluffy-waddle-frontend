@@ -3,11 +3,11 @@ import { Container, Content, Icons, Pages } from "./styles";
 import Left from "../../public/images/left.svg";
 import Right from "../../public/images/right.svg";
 import { useContext, useEffect, useState } from "react";
-import PaginationContext from "../../contexts/Pagination";
+import QueryContext from "../../contexts/Query";
 import { useRouter } from "next/router";
 
 const Pagination: React.FC = () => {
-  const { page, setPage } = useContext(PaginationContext);
+  const { page, setPage } = useContext(QueryContext);
   const router = useRouter();
   const [route, setRoute] = useState(router.asPath);
   const refreshData = (newPage: number) => {
