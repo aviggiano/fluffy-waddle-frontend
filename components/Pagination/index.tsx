@@ -2,25 +2,43 @@ import { Container, Content, Icons, Pages } from "./styles";
 
 import Left from "../../public/images/left.svg";
 import Right from "../../public/images/right.svg";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import PaginationContext from "../../contexts/Pagination";
 import { useRouter } from "next/router";
 
 const Pagination: React.FC = () => {
   const { page, setPage } = useContext(PaginationContext);
   const router = useRouter();
+  const [route, setRoute] = useState(router.asPath);
   const refreshData = (newPage: number) => {
+    const route = router.asPath.replace(/\?.*/, "");
     router.push({
-      pathname: router.asPath.replace(/\?.*/, ""),
+      pathname: route,
       query: { from: 10 * (newPage - 1), to: 10 * newPage },
     });
     setPage(newPage);
+    setRoute(route);
   };
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      console.log({ url, route });
+      const newRoute = url.replace(/\?.*/, "");
+      if (newRoute !== route) {
+        setPage(1);
+        setRoute(url);
+      }
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [route, router.events, setPage]);
 
   return (
     <Container>
       <Content>
-        <Pages>Page {page} of ...</Pages>
+        <Pages>Page {page}</Pages>
         <Icons>
           <button
             type="button"
