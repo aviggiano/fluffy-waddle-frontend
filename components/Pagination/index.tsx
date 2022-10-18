@@ -10,7 +10,6 @@ const Pagination: React.FC = () => {
   const [page, setPage] = useState(1);
   const { setFrom, setTo } = useContext(QueryContext);
   const router = useRouter();
-  const [route, setRoute] = useState(router.asPath);
   const refreshData = (newPage: number) => {
     const from = PAGINATION_MIN * (newPage - 1) + 1;
     const to = PAGINATION_MIN * newPage;
@@ -27,25 +26,7 @@ const Pagination: React.FC = () => {
     setFrom(from);
     setTo(to);
     setPage(newPage);
-    setRoute(route);
   };
-
-  useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      console.log({ url, route });
-      const newRoute = url.replace(/\?.*/, "");
-      if (newRoute !== route) {
-        setFrom(0);
-        setTo(PAGINATION_MIN);
-        setPage(1);
-        setRoute(url);
-      }
-    };
-    router.events.on("routeChangeStart", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, [route, router.events, setFrom, setTo]);
 
   return (
     <Container>

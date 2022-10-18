@@ -1,4 +1,10 @@
-import React, { createContext, PropsWithChildren, useState } from "react";
+import { useRouter } from "next/router";
+import React, {
+  createContext,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
 
 interface Query {
   from?: number;
@@ -25,6 +31,27 @@ export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [search, setSearch] = useState<string | undefined>();
   const [confidence, setConfidence] = useState<string[]>([]);
   const [impact, setImpact] = useState<string[]>([]);
+
+  const router = useRouter();
+  const [route, setRoute] = useState(router.asPath);
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      console.log({ url, route });
+      const newRoute = url.replace(/\?.*/, "");
+      if (newRoute !== route) {
+        setFrom(0);
+        setTo(PAGINATION_MIN);
+        setSearch(undefined);
+        setConfidence([]);
+        setImpact([]);
+      }
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [route, router.events, setFrom, setTo]);
 
   return (
     <QueryContext.Provider
