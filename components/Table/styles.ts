@@ -75,7 +75,14 @@ export const Check = styled.div``;
 export const Confidence = styled.div<{ confidence: string }>`
   height: 24px;
   border-radius: 8px;
-  background-color: ${(props) => (props.confidence === "High" ? red : yellow)};
+  background-color: ${(props) =>
+    props.confidence === "High"
+      ? red
+      : props.confidence === "Medium"
+      ? yellow
+      : props.confidence === "Low"
+      ? info
+      : optimization};
   display: flex;
   align-items: center;
   padding-left: 8px;

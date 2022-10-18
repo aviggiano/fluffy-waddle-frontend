@@ -35,7 +35,7 @@ export const Icons = styled.div`
     border: 0.1px solid ${gray02};
     border-radius: 8px;
 
-    height: 40px;
-    width: 40px;
+    height: 28px;
+    width: 28px;
   }
 `;

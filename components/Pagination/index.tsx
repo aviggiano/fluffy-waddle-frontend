@@ -18,7 +18,11 @@ const Pagination: React.FC = () => {
     const route = router.asPath.replace(/\?.*/, "");
     router.push({
       pathname: route,
-      query: { from, to },
+      query: {
+        ...router.query,
+        from,
+        to,
+      },
     });
     setFrom(from);
     setTo(to);

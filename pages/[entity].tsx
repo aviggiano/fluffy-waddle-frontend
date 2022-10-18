@@ -10,6 +10,8 @@ import config from "../config";
 import { Entity } from "../types";
 import Pagination from "../components/Pagination";
 import { PAGINATION_MAX, PAGINATION_MIN } from "../contexts/Query";
+import DropdownFilter from "../components/DropdownFilter";
+import { useRouter } from "next/router";
 
 const Content = styled.div`
   margin-left: 296px;
@@ -20,6 +22,21 @@ const Content = styled.div`
   }
 `;
 
+const SelectBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Filters = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+
+  gap: 8px;
+`;
+
 interface Props {
   entity: Entity;
   header: string[];
@@ -27,6 +44,9 @@ interface Props {
 }
 
 const Dashboard: NextPage<Props> = ({ header, rows, entity }: Props) => {
+  const router = useRouter();
+  const route = router.asPath.replace(/\?.*/, "");
+
   return (
     <div>
       <Head />
@@ -35,7 +55,29 @@ const Dashboard: NextPage<Props> = ({ header, rows, entity }: Props) => {
         <Content>
           <Searchbar />
           <H1>{entity}</H1>
-          <Pagination />
+          <SelectBar>
+            {route === "/blockchains" ? (
+              <Filters>
+                <DropdownFilter
+                  filter="confidence"
+                  name="Confidence"
+                  values={["High", "Medium", "Low"]}
+                />
+                <DropdownFilter
+                  filter="impact"
+                  name="Impact"
+                  values={[
+                    "High",
+                    "Medium",
+                    "Low",
+                    "Informational",
+                    "Optimization",
+                  ]}
+                />
+              </Filters>
+            ) : null}
+            <Pagination />
+          </SelectBar>
           <Table header={header} rows={rows} />
         </Content>
       </main>

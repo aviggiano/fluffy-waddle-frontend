@@ -4,17 +4,7 @@ import { Container, Content } from "./styles";
 import Search from "../../public/images/search.svg";
 import QueryContext from "../../contexts/Query";
 import { useRouter } from "next/router";
-
-function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
-  func: F,
-  waitFor = 300
-): (...args: Parameters<F>) => void {
-  let timeout: NodeJS.Timeout;
-  return (...args: Parameters<F>): void => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), waitFor);
-  };
-}
+import debounce from "../../services/debounce";
 
 const Searchbar: React.FC = () => {
   const { search, setSearch } = useContext(QueryContext);
@@ -26,7 +16,10 @@ const Searchbar: React.FC = () => {
     debounce((nextValue) =>
       router.push({
         pathname: route,
-        query: { search: nextValue },
+        query: {
+          ...router.query,
+          search: nextValue,
+        },
       })
     ),
     [router, route]
