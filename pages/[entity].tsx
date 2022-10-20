@@ -94,14 +94,15 @@ const SearchEntityColumnMap: Record<Entity, string[]> = {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
-  console.log(query);
 
-  const from = Math.max(Number(query.from || 1), 1);
+  const from = Math.max(Number(query.from || 0), 0);
   const to = Math.max(
-    Math.min(Number(query.to || PAGINATION_MIN), from + PAGINATION_MAX - 1),
+    Math.min(Number(query.to || PAGINATION_MIN - 1), from + PAGINATION_MAX - 1),
     from + PAGINATION_MIN - 1
   );
   const search = query.search || "";
+
+  console.log({ ...query, from, to, search });
 
   const entityRoute: string = query.entity as string;
   const entity = entityRoute.substring(0, entityRoute.length - 1) as Entity;

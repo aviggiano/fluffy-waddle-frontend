@@ -11,8 +11,8 @@ const Pagination: React.FC = () => {
   const { setFrom, setTo } = useContext(QueryContext);
   const router = useRouter();
   const refreshData = (newPage: number) => {
-    const from = PAGINATION_MIN * (newPage - 1) + 1;
-    const to = PAGINATION_MIN * newPage;
+    const from = PAGINATION_MIN * (newPage - 1);
+    const to = PAGINATION_MIN * newPage - 1;
 
     const route = router.asPath.replace(/\?.*/, "");
     router.push({
