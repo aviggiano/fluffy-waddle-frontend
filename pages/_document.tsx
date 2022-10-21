@@ -59,6 +59,13 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <div
+            className="embedsocial-forms-iframe"
+            data-ref="f0f3681c743cff13595be794775a3c7534fb7a73"
+            data-widget="true"
+            data-height="auto"
+          ></div>
+          <script src="/static/feedback.js" async />
         </body>
       </Html>
     );

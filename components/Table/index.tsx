@@ -63,9 +63,11 @@ const Table: React.FC<Props> = ({ header, rows }: Props) => {
       <Content>
         <table>
           <thead>
-            {header.map((column) => (
-              <th key={column}>{column}</th>
-            ))}
+            <tr>
+              {header.map((column) => (
+                <th key={column}>{column}</th>
+              ))}
+            </tr>
           </thead>
           <tbody>
             {rows.map((row) => (
