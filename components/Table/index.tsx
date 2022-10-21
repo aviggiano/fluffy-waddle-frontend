@@ -44,7 +44,7 @@ const isAddress = (column: string): boolean => column === "Address";
 
 const formatAddress = (value: string) => (
   <a target="_blank" href={value} rel="noreferrer">
-    {value.replace(/.*\//, "").replace("#code", "")}
+    <span>{value.replace(/.*\//, "").replace("#code", "")}</span>
   </a>
 );
 

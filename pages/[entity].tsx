@@ -1,6 +1,5 @@
 import type { GetServerSideProps, NextPage } from "next";
 import { createClient } from "@supabase/supabase-js";
-import styled from "styled-components";
 import H1 from "../components/H1";
 import Head from "../components/Head";
 import Searchbar from "../components/Searchbar";
@@ -12,24 +11,7 @@ import Pagination from "../components/Pagination";
 import { PAGINATION_MAX, PAGINATION_MIN } from "../contexts/Query";
 import { useContext } from "react";
 import SidebarContext from "../contexts/Sidebar";
-import { black2 } from "../styles/colors";
-
-const Content = styled.div<{ isOpen: boolean }>`
-  margin-left: ${(props) => (props.isOpen ? "296px" : "72px")};
-  background-color: ${black2};
-  padding: 24px;
-
-  h1 {
-    text-transform: capitalize;
-  }
-`;
-
-const SelectBar = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
+import { Content, SelectBar } from ".";
 
 interface Props {
   entity: Entity;

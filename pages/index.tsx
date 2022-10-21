@@ -13,8 +13,9 @@ import DropdownFilter from "../components/DropdownFilter";
 import { useContext } from "react";
 import SidebarContext from "../contexts/Sidebar";
 import { black2 } from "../styles/colors";
+import pageWidth from "../styles/pageWidth";
 
-const Content = styled.div<{ isOpen: boolean }>`
+export const Content = styled.div<{ isOpen: boolean }>`
   margin-left: ${(props) => (props.isOpen ? "296px" : "72px")};
   background-color: ${black2};
   padding: 24px;
@@ -24,11 +25,19 @@ const Content = styled.div<{ isOpen: boolean }>`
   }
 `;
 
-const SelectBar = styled.div`
+export const SelectBar = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${pageWidth.phone}px) {
+    flex-direction: column;
+    align-items: start;
+    div {
+      padding-left: 0px;
+    }
+  }
 `;
 
 const Filters = styled.div`
@@ -86,15 +95,6 @@ const Dashboard: NextPage<Props> = ({ header, rows }: Props) => {
   );
 };
 
-const JsonbEntityColumnMaps: Record<Entity, Record<string, string[]>> = {
-  blockchain: {},
-  contract: {},
-  report: {
-    details: ["confidence", "impact"],
-  },
-  statistic: {},
-};
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   await connect();
   const { query } = context;
@@ -127,6 +127,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const rawQuery = `
   SELECT 
+    r.id as id,
     TO_CHAR(r."createdAt", 'yyyy-mm-dd') as "Date",
     b.name as "Blockchain",
     CONCAT('https://', b.explorer, '.com/address/', c.address, '#code') as "Address",
@@ -150,9 +151,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const reports = await database.manager.query(rawQuery);
 
-  const header = Object.keys(reports[0] || {});
+  const header = Object.keys(reports[0] || {}).filter((e) => e !== "id");
   const rows = reports;
-  // console.log(JSON.stringify(rows[0]));
 
   return {
     props: {

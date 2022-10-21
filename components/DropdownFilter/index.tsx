@@ -45,8 +45,10 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
       ...filters,
       [value]: !filters[value],
     };
-    setFilters(newFilters);
     const query = Object.keys(newFilters).filter((e) => newFilters[e]);
+
+    setFilters(newFilters);
+    setter(query);
 
     const route = router.asPath.replace(/\?.*/, "");
     router.push({
@@ -56,7 +58,6 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
         [filter]: query.join(","),
       },
     });
-    setter(query);
   };
 
   useEffect(() => {

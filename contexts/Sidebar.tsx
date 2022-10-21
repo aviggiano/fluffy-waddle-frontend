@@ -1,4 +1,10 @@
-import React, { createContext, PropsWithChildren, useState } from "react";
+import React, {
+  createContext,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
+import pageWidth from "../styles/pageWidth";
 
 interface Sidebar {
   isOpen: boolean;
@@ -9,6 +15,10 @@ const SidebarContext = createContext<Sidebar>({} as Sidebar);
 
 export const SidebarProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    setIsOpen(screen.width > pageWidth.phone);
+  }, []);
 
   return (
     <SidebarContext.Provider

@@ -41,7 +41,7 @@ export const Title = styled.div<{ isOpen: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: ${(props) => (props.isOpen ? "inherit" : "16px")};
+  width: ${(props) => (props.isOpen ? "inherit" : "20px")};
   margin-bottom: ${(props) => (props.isOpen ? "inherit" : "12px")};
 
   a {
@@ -77,7 +77,7 @@ export const Item = styled.div<Props>`
   background-color: ${(props) => (props.selected ? blue025 : "inherit")};
   color: ${(props) => (props.selected ? white : gray07)};
   width: ${(props) => (props.isOpen ? "272px" : "42px")};
-  margin-left: -12px;
+  margin-left: ${(props) => (props.isOpen ? "-12px" : "-10px")};
 
   display: flex;
   align-items: center;

@@ -10,6 +10,7 @@ import {
   optimization,
   blue070,
 } from "../../styles/colors";
+import pageWidth from "../../styles/pageWidth";
 
 export const Container = styled.div`
   min-height: 628px;
@@ -28,6 +29,15 @@ export const Container = styled.div`
 
     thead {
       color: ${gray04};
+      border-bottom: 0.1px solid ${gray02};
+
+      @media (max-width: ${pageWidth.phone}px) {
+        display: flex;
+        flex-direction: column;
+        height: unset;
+        width: calc(100vw - 72px - 48px);
+        padding-bottom: 24px;
+      }
 
       th {
         font-weight: normal;
@@ -36,7 +46,11 @@ export const Container = styled.div`
 
         height: 64px;
 
-        border-bottom: 0.1px solid ${gray02};
+        @media (max-width: ${pageWidth.phone}px) {
+          border: unset;
+          height: unset;
+          padding: unset;
+        }
       }
     }
 
@@ -46,11 +60,25 @@ export const Container = styled.div`
 
         height: 64px;
 
+        @media (max-width: ${pageWidth.phone}px) {
+          display: flex;
+          flex-direction: column;
+          height: unset;
+          padding-top: 24px;
+          padding-bottom: 24px;
+
+          width: calc(100vw - 72px - 48px);
+        }
+
         td {
           color: ${gray07};
 
           padding-left: 24px;
           min-width: 120px;
+
+          @media (max-width: ${pageWidth.phone}px) {
+            padding: unset;
+          }
         }
       }
     }
@@ -60,10 +88,22 @@ export const Container = styled.div`
 export const Content = styled.div`
   padding: 24px;
 
+  @media (max-width: ${pageWidth.phone}px) {
+    padding: unset;
+  }
+
   a {
     text-decoration: underline;
     &:hover {
       color: ${blue070};
+    }
+
+    @media (max-width: ${pageWidth.phone}px) {
+      span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 `;
