@@ -72,6 +72,18 @@ export const Results = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
+  max-height: 300px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  &::-webkit-scrollbar {
+    /* WebKit */
+    width: 0;
+    height: 0;
+  }
 `;
 export const Detector = styled.div`
   display: flex;

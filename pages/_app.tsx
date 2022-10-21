@@ -2,6 +2,7 @@ import type { AppProps } from "next/app";
 
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { QueryProvider } from "../contexts/Query";
+import { SidebarProvider } from "../contexts/Sidebar";
 import * as colors from "../styles/colors";
 
 const GlobalStyle = createGlobalStyle`
@@ -39,7 +40,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <QueryProvider>
-          <Component {...pageProps} />
+          <SidebarProvider>
+            <Component {...pageProps} />
+          </SidebarProvider>
         </QueryProvider>
       </ThemeProvider>
     </>

@@ -4,6 +4,8 @@ import { gray07 } from "../../styles/colors";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  height: 56px;
+  justify-content: center;
 `;
 
 export const Content = styled.div`

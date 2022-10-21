@@ -8,9 +8,9 @@ import {
   white,
 } from "../../styles/colors";
 
-export const Container = styled.div`
+export const Container = styled.div<{ isOpen: boolean }>`
   height: 100%;
-  width: 296px;
+  width: ${(props) => (props.isOpen ? "296px" : "72px")};
 
   position: fixed;
   left: 0;
@@ -20,16 +20,29 @@ export const Container = styled.div`
   flex-direction: column;
 
   background-color: ${black1};
+
+  span {
+    display: ${(props) => (props.isOpen ? "inherit" : "none")};
+  }
 `;
 
 export const Content = styled.div`
   padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  div:last-of-type {
+    margin-top: auto;
+  }
 `;
 
-export const Title = styled.div`
+export const Title = styled.div<{ isOpen: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: ${(props) => (props.isOpen ? "inherit" : "16px")};
+  margin-bottom: ${(props) => (props.isOpen ? "inherit" : "12px")};
 
   a {
     width: 100%;
@@ -37,30 +50,33 @@ export const Title = styled.div`
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: 16px;
+    gap: ${(props) => (props.isOpen ? "16px" : "inherit")};
   }
 `;
 
-export const Subtitle = styled.div`
+export const Subtitle = styled.div<{ isOpen: boolean }>`
   margin-top: 24px;
   margin-bottom: 12px;
   font-size: 12px;
   color: ${gray04};
+
+  display: ${(props) => (props.isOpen ? "inherit" : "none")};
 `;
 
 interface Props {
   selected: boolean;
+  isOpen: boolean;
 }
 
 export const Item = styled.div<Props>`
-  height: 44px;
+  height: 42px;
   border: 1px solid;
   border-radius: 8px;
   border-color: transparent;
 
-  background-color: ${(props) => (props.selected ? blue025 : "unset")};
+  background-color: ${(props) => (props.selected ? blue025 : "inherit")};
   color: ${(props) => (props.selected ? white : gray07)};
-  width: 272px;
+  width: ${(props) => (props.isOpen ? "272px" : "42px")};
   margin-left: -12px;
 
   display: flex;
@@ -74,6 +90,9 @@ export const Item = styled.div<Props>`
     display: flex;
     flex-direction: row;
     gap: 16px;
+    span {
+      display: ${(props) => (props.isOpen ? "inherit" : "none")};
+    }
   }
 
   svg {
@@ -87,5 +106,5 @@ export const Item = styled.div<Props>`
     text-align: center;
   }
 
-  transition: all 0.15s ease-in-out;
+  transition: background-color 0.15s ease-in-out;
 `;

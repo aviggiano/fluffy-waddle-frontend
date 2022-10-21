@@ -10,9 +10,13 @@ import config from "../config";
 import { Entity } from "../types";
 import Pagination from "../components/Pagination";
 import { PAGINATION_MAX, PAGINATION_MIN } from "../contexts/Query";
+import { useContext } from "react";
+import SidebarContext from "../contexts/Sidebar";
+import { black2 } from "../styles/colors";
 
-const Content = styled.div`
-  margin-left: 296px;
+const Content = styled.div<{ isOpen: boolean }>`
+  margin-left: ${(props) => (props.isOpen ? "296px" : "72px")};
+  background-color: ${black2};
   padding: 24px;
 
   h1 {
@@ -34,12 +38,13 @@ interface Props {
 }
 
 const Dashboard: NextPage<Props> = ({ header, rows, entity }: Props) => {
+  const { isOpen } = useContext(SidebarContext);
   return (
     <div>
       <Head />
       <main>
         <Sidebar />
-        <Content>
+        <Content isOpen={isOpen}>
           <Searchbar />
           <H1>{entity}</H1>
           <SelectBar>

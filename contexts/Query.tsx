@@ -32,10 +32,10 @@ export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [to, setTo] = useState(PAGINATION_MIN);
   const [search, setSearch] = useState<string | undefined>();
   const [confidence, setConfidence] = useState<string[]>(
-    (router.query?.confidence as string).split(",")
+    ((router.query?.confidence || ",") as string).split(",")
   );
   const [impact, setImpact] = useState<string[]>(
-    (router.query?.impact as string).split(",")
+    ((router.query?.impact || ",") as string).split(",")
   );
 
   const [route, setRoute] = useState(router.asPath);
