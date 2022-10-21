@@ -13,7 +13,9 @@
     "axios": "^1.1.2",
     "date-fns": "^2.29.3",
     "ethers": "^5.7.1",
+    "fluffy-waddle-database": "^0.1.5",
     "next": "12.3.1",
+    "pg": "^8.8.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "^5.3.6"

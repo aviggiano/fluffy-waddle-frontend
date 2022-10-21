@@ -8,6 +8,7 @@ import {
   yellow,
   info,
   optimization,
+  blue070,
 } from "../../styles/colors";
 
 export const Container = styled.div`
@@ -58,6 +59,13 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   padding: 24px;
+
+  a {
+    text-decoration: underline;
+    &:hover {
+      color: ${blue070};
+    }
+  }
 `;
 
 export const Results = styled.div`

@@ -5,10 +5,17 @@ import React from "react";
 import { Container, Content, Item, Subtitle, Title } from "./styles";
 
 import logo from "../../public/images/logo.png";
+import Dashboard from "../../public/images/dashboard.svg";
 import Blockchain from "../../public/images/blockchain.svg";
 import Contract from "../../public/images/contract.svg";
 import Report from "../../public/images/report.svg";
 import Statistic from "../../public/images/statistic.svg";
+
+const home = {
+  name: "Home",
+  href: "/",
+  image: <Dashboard />,
+};
 
 const items = [
   {
@@ -53,13 +60,17 @@ const Sidebar: React.FC = () => {
           </Link>
         </Title>
         <Subtitle>DASHBOARDS</Subtitle>
+        <Item key={home.name} selected={-1 === selectedIndex}>
+          <Link href={home.href}>
+            <a>
+              {home.image}
+              <span>{home.name}</span>
+            </a>
+          </Link>
+        </Item>
+        <Subtitle>ENTITIES</Subtitle>
         {items.map((item, index) => (
-          <Item
-            key={item.name}
-            selected={
-              selectedIndex === -1 ? index === 0 : index === selectedIndex
-            }
-          >
+          <Item key={item.name} selected={index === selectedIndex}>
             <Link href={item.href}>
               <a>
                 {item.image}

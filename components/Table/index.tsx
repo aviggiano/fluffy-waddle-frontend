@@ -20,7 +20,8 @@ interface Props {
 const isDate = (column: string): boolean =>
   column === "createdAt" || column === "updatedAt" || column === "verified";
 
-const isDetails = (column: string): boolean => column === "details";
+const isDetails = (column: string): boolean =>
+  column.toLowerCase() === "details";
 
 const formatDetails = (value: string) => (
   <Results>
@@ -39,11 +40,21 @@ const formatDetails = (value: string) => (
   </Results>
 );
 
+const isAddress = (column: string): boolean => column === "Address";
+
+const formatAddress = (value: string) => (
+  <a target="_blank" href={value} rel="noreferrer">
+    {value.replace(/.*\//, "").replace("#code", "")}
+  </a>
+);
+
 const formatColumn = (row: Record<string, string>, column: string) =>
   isDate(column)
     ? formatDate(new Date(row[column]), "yyyy-MM-dd")
     : isDetails(column)
     ? formatDetails(row[column])
+    : isAddress(column)
+    ? formatAddress(row[column])
     : row[column];
 
 const Table: React.FC<Props> = ({ header, rows }: Props) => {
