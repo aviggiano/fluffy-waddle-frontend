@@ -26,13 +26,18 @@ export const PAGINATION_MAX = 100;
 const QueryContext = createContext<Query>({} as Query);
 
 export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const router = useRouter();
+
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(PAGINATION_MIN);
   const [search, setSearch] = useState<string | undefined>();
-  const [confidence, setConfidence] = useState<string[]>([]);
-  const [impact, setImpact] = useState<string[]>([]);
+  const [confidence, setConfidence] = useState<string[]>(
+    (router.query?.confidence as string).split(",")
+  );
+  const [impact, setImpact] = useState<string[]>(
+    (router.query?.impact as string).split(",")
+  );
 
-  const router = useRouter();
   const [route, setRoute] = useState(router.asPath);
 
   useEffect(() => {

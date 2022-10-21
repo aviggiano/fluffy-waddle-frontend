@@ -23,7 +23,17 @@ interface Props {
 const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [filters, setFilters] = useState<Record<string, boolean>>({});
+  const query = useContext(QueryContext);
+  const f = ((query as any)[filter] || [])
+    .map((e: string) => ({ [e]: true }))
+    .reduce(
+      (a: Record<string, boolean>, b: Record<string, boolean>) => ({
+        ...a,
+        ...b,
+      }),
+      {}
+    );
+  const [filters, setFilters] = useState<Record<string, boolean>>(f);
   onClickOutside(ref, () => setIsOpen(!isOpen));
 
   const context = useContext(QueryContext);

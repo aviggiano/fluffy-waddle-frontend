@@ -2,7 +2,7 @@ import { Container, Content, Icons, Pages } from "./styles";
 
 import Left from "../../public/images/left.svg";
 import Right from "../../public/images/right.svg";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import QueryContext, { PAGINATION_MIN } from "../../contexts/Query";
 import { useRouter } from "next/router";
 
