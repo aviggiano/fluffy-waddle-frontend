@@ -1,18 +1,10 @@
 import { Button, Container, Content, DropdownContent } from "./styles";
 
 import Filter from "../../public/images/filter.svg";
-import {
-  MutableRefObject,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Confidence, Impact } from "../Table/styles";
 import { useRouter } from "next/router";
 import QueryContext from "../../contexts/Query";
-
-function onClickOutside(ref: MutableRefObject<null>, fn: () => void) {}
 
 interface Props {
   filter: string;
@@ -23,8 +15,11 @@ interface Props {
 const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const query = useContext(QueryContext);
-  const f = ((query as any)[filter] || [])
+  const context = useContext(QueryContext);
+  const valuesFromQuery = (context as any)[filter];
+  const setter = (context as any)[`set${name}`];
+  const router = useRouter();
+  const filtersMap = (valuesFromQuery || [])
     .map((e: string) => ({ [e]: true }))
     .reduce(
       (a: Record<string, boolean>, b: Record<string, boolean>) => ({
@@ -33,12 +28,8 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
       }),
       {}
     );
-  const [filters, setFilters] = useState<Record<string, boolean>>(f);
-  onClickOutside(ref, () => setIsOpen(!isOpen));
-
-  const context = useContext(QueryContext);
-  const setter = (context as any)[`set${name}`];
-  const router = useRouter();
+  console.log(filter);
+  const [filters, setFilters] = useState<Record<string, boolean>>(filtersMap);
 
   const setFilter = (value: string) => {
     const newFilters = {
@@ -46,7 +37,6 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
       [value]: !filters[value],
     };
     const query = Object.keys(newFilters).filter((e) => newFilters[e]);
-
     setFilters(newFilters);
     setter(query);
 
@@ -85,14 +75,17 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
           <Button
             filtered={filters[value]}
             key={value}
-            onClick={() => setFilter(value)}
+            onClick={(e) => {
+              e.preventDefault();
+              setFilter(value);
+            }}
           >
             {filter === "confidence" ? (
               <Confidence confidence={value}>{value}</Confidence>
             ) : filter === "impact" ? (
               <Impact impact={value}>{value}</Impact>
             ) : (
-              <div>{value}</div>
+              <Impact impact={value}>{value}</Impact>
             )}
           </Button>
         ))}

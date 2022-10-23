@@ -15,6 +15,7 @@ import SidebarContext from "../contexts/Sidebar";
 import { black2 } from "../styles/colors";
 import pageWidth from "../styles/pageWidth";
 import { CheckFilters, ConfidenceFilters, ImpactFilters } from "../constants";
+import ClearFilters from "../components/ClearFilters";
 
 export const Content = styled.div<{ isOpen: boolean }>`
   margin-left: ${(props) => (props.isOpen ? "296px" : "72px")};
@@ -45,6 +46,7 @@ const Filters = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: start;
+  margin-right: auto;
 
   gap: 8px;
 `;
@@ -68,21 +70,25 @@ const Dashboard: NextPage<Props> = ({ header, rows }: Props) => {
           <SelectBar>
             <Filters>
               <DropdownFilter
+                key="check"
                 filter="check"
                 name="Check"
                 values={CheckFilters}
               />
               <DropdownFilter
+                key="confidence"
                 filter="confidence"
                 name="Confidence"
                 values={ConfidenceFilters}
               />
               <DropdownFilter
+                key="impact"
                 filter="impact"
                 name="Impact"
                 values={ImpactFilters}
               />
             </Filters>
+            <ClearFilters />
             <Pagination />
           </SelectBar>
           <Table header={header} rows={rows} />
