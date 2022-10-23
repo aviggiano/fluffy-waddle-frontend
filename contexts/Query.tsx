@@ -85,7 +85,7 @@ export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
       const newRoute = url.replace(/\?.*/, "");
       if (newRoute !== route) {
         console.log({ url, route, newRoute });
-        clearFilters();
+        // clearFilters();
       }
     };
     router.events.on("routeChangeStart", handleRouteChange);

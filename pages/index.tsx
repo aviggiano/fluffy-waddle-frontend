@@ -174,7 +174,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const reports = await database.manager.query(rawQuery, params);
 
-  const header = Object.keys(reports[0] || {}).filter((e) => e !== "id");
+  const header = Object.keys(reports[0] || {});
   const rows = reports;
 
   return {
