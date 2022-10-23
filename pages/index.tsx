@@ -107,40 +107,44 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   console.log({ ...query, from, to, search });
 
-  const check = ((query.check || "") as string)
+  const checkSanitized = ((query.check || "") as string)
     .split(",")
     .filter((x) => CheckFilters.includes(x))
     .map((confidence) => `@.check == "${confidence}"`)
     .join(" || ");
-  const confidence = ((query.confidence || "") as string)
+  const confidenceSanitized = ((query.confidence || "") as string)
     .split(",")
     .filter((x) => ConfidenceFilters.includes(x))
     .map((confidence) => `@.confidence == "${confidence}"`)
     .join(" || ");
-  const impact = ((query.impact || "") as string)
+  const impactSanitized = ((query.impact || "") as string)
     .split(",")
     .filter((x) => ImpactFilters.includes(x))
     .map((impact) => `@.impact == "${impact}"`)
     .join(" || ");
-  const detailsFilter = [confidence, impact, check]
+  const detailsFilterSanitized = [
+    confidenceSanitized,
+    impactSanitized,
+    checkSanitized,
+  ]
     .filter((x) => x)
     .map((x) => `(${x})`)
     .join(" && ");
-  const searchFilter = search
-    ? `c.name ~ '${search}' OR c.address ~ '${search}'`
-    : "";
-  const filters = [
-    detailsFilter
-      ? `CAST(details AS jsonb) @@ 'exists($.results.detectors[*] ? (${detailsFilter}))'`
+  const searchFilterUnsafe = search ? `c.name ~ $1 OR c.address ~ $2` : "";
+
+  const filtersUnsafe = [
+    detailsFilterSanitized
+      ? `CAST(details AS jsonb) @@ 'exists($.results.detectors[*] ? (${detailsFilterSanitized}))'`
       : "",
-    searchFilter,
+    searchFilterUnsafe,
   ].filter((x) => x);
-  const where = filters.length
+  const whereUnsafe = filtersUnsafe.length
     ? `
     WHERE
-      ${filters.join(" AND ")}
+      ${filtersUnsafe.join(" AND ")}
   `
     : "";
+  const params = [search, search].filter((x) => x);
 
   const rawQuery = `
   SELECT 
@@ -156,13 +160,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ON r."contractId" = c.id
     INNER JOIN blockchain AS b
     ON b.id = c."blockchainId"
-  ${where}
+  ${whereUnsafe}
   OFFSET ${skip}
   LIMIT ${limit}
   `;
   console.log(rawQuery);
 
-  const reports = await database.manager.query(rawQuery);
+  const reports = await database.manager.query(rawQuery, params);
 
   const header = Object.keys(reports[0] || {}).filter((e) => e !== "id");
   const rows = reports;
