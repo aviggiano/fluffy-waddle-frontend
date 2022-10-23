@@ -25,20 +25,21 @@ export const Content = styled.div`
   }
 `;
 
-export const DropdownContent = styled.div<{ isOpen: boolean }>`
+export const DropdownContent = styled.div<{ n: number; isOpen: boolean }>`
   position: absolute;
   margin-top: calc(28px + 8px);
   padding-top: 4px;
   padding-bottom: 4px;
 
-  min-width: 88px;
+  min-width: calc(2 * 88px);
 
   border: 0.1px solid ${gray02};
   border-radius: 8px;
   background-color: ${black1};
 
-  display: ${(props) => (props.isOpen ? "flex" : "none")};
-  flex-direction: column;
+  display: ${(props) => (props.isOpen ? "grid" : "none")};
+  grid-template-columns: repeat(${(props) => (props.n > 5 ? 4 : 1)}, 1fr);
+
   gap: 4px;
   transition: all 0.15s ease-in-out;
 `;

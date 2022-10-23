@@ -14,6 +14,7 @@ import { useContext } from "react";
 import SidebarContext from "../contexts/Sidebar";
 import { black2 } from "../styles/colors";
 import pageWidth from "../styles/pageWidth";
+import { CheckFilters, ConfidenceFilters, ImpactFilters } from "../constants";
 
 export const Content = styled.div<{ isOpen: boolean }>`
   margin-left: ${(props) => (props.isOpen ? "296px" : "72px")};
@@ -54,15 +55,6 @@ interface Props {
   rows: Record<string, string>[];
 }
 
-const ConfidenceFilters = ["High", "Medium", "Low"];
-const ImpactFilters = [
-  "High",
-  "Medium",
-  "Low",
-  "Informational",
-  "Optimization",
-];
-
 const Dashboard: NextPage<Props> = ({ header, rows }: Props) => {
   const { isOpen } = useContext(SidebarContext);
   return (
@@ -75,6 +67,11 @@ const Dashboard: NextPage<Props> = ({ header, rows }: Props) => {
           <H1>Dashboard</H1>
           <SelectBar>
             <Filters>
+              <DropdownFilter
+                filter="check"
+                name="Check"
+                values={CheckFilters}
+              />
               <DropdownFilter
                 filter="confidence"
                 name="Confidence"
@@ -106,31 +103,51 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   );
   const skip = from;
   const limit = to - from + 1;
-  const search = query.search || "";
+  const search = ((query.search || "") as string).trim();
 
   console.log({ ...query, from, to, search });
 
-  const impact = ((query.impact || "") as string)
+  const check = ((query.check || "") as string)
     .split(",")
-    .filter((x) => ImpactFilters.includes(x))
-    .map((impact) => `@.impact == "${impact}"`)
+    .filter((x) => CheckFilters.includes(x))
+    .map((confidence) => `@.check == "${confidence}"`)
     .join(" || ");
   const confidence = ((query.confidence || "") as string)
     .split(",")
     .filter((x) => ConfidenceFilters.includes(x))
     .map((confidence) => `@.confidence == "${confidence}"`)
     .join(" || ");
-  const filter = [impact, confidence]
+  const impact = ((query.impact || "") as string)
+    .split(",")
+    .filter((x) => ImpactFilters.includes(x))
+    .map((impact) => `@.impact == "${impact}"`)
+    .join(" || ");
+  const detailsFilter = [confidence, impact, check]
     .filter((x) => x)
     .map((x) => `(${x})`)
     .join(" && ");
+  const searchFilter = search
+    ? `c.name ~ '${search}' OR c.address ~ '${search}'`
+    : "";
+  const filters = [
+    detailsFilter
+      ? `CAST(details AS jsonb) @@ 'exists($.results.detectors[*] ? (${detailsFilter}))'`
+      : "",
+    searchFilter,
+  ].filter((x) => x);
+  const where = filters.length
+    ? `
+    WHERE
+      ${filters.join(" AND ")}
+  `
+    : "";
 
   const rawQuery = `
   SELECT 
     r.id as id,
     TO_CHAR(r."createdAt", 'yyyy-mm-dd') as "Date",
     b.name as "Blockchain",
-    CONCAT('https://', b.explorer, '.com/address/', c.address, '#code') as "Address",
+    CONCAT('https://', b.explorer, '.deth.net/address/', c.address) as "Address",
     c.txns as "Transactions", 
     c.balance as "Balance", 
     r.details as "Details"
@@ -139,11 +156,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     ON r."contractId" = c.id
     INNER JOIN blockchain AS b
     ON b.id = c."blockchainId"
-  ${
-    filter
-      ? `WHERE CAST(details AS jsonb) @@ 'exists($.results.detectors[*] ? (${filter}))'`
-      : ""
-  }
+  ${where}
   OFFSET ${skip}
   LIMIT ${limit}
   `;

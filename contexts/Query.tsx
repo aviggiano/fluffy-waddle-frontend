@@ -10,12 +10,16 @@ interface Query {
   from?: number;
   to?: number;
   search?: string;
+
+  check: string[];
   confidence: string[];
   impact: string[];
 
   setFrom: (from: number) => void;
   setTo: (to: number) => void;
   setSearch: (search: string) => void;
+
+  setCheck: (check: string[]) => void;
   setConfidence: (confidence: string[]) => void;
   setImpact: (impact: string[]) => void;
 }
@@ -31,14 +35,25 @@ export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [from, setFrom] = useState(0);
   const [to, setTo] = useState(PAGINATION_MIN);
   const [search, setSearch] = useState<string | undefined>();
+  const [check, setCheck] = useState<string[]>(
+    (router.query?.check as string)
+      ? (router.query?.check as string).split(",")
+      : []
+  );
   const [confidence, setConfidence] = useState<string[]>(
-    ((router.query?.confidence || ",") as string).split(",")
+    (router.query?.confidence as string)
+      ? (router.query?.confidence as string).split(",")
+      : []
   );
   const [impact, setImpact] = useState<string[]>(
-    ((router.query?.impact || ",") as string).split(",")
+    (router.query?.impact as string)
+      ? (router.query?.impact as string).split(",")
+      : []
   );
 
   const [route, setRoute] = useState(router.asPath);
+
+  console.log(router.query);
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
@@ -48,6 +63,7 @@ export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
         setFrom(0);
         setTo(PAGINATION_MIN);
         setSearch(undefined);
+        setCheck([]);
         setConfidence([]);
         setImpact([]);
       }
@@ -67,6 +83,8 @@ export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
         setTo,
         search,
         setSearch,
+        check,
+        setCheck,
         confidence,
         setConfidence,
         impact,

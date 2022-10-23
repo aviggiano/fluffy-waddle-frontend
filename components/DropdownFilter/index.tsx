@@ -71,6 +71,7 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [ref, setIsOpen, isOpen]);
+
   return (
     <Container ref={ref}>
       <Content>
@@ -79,7 +80,7 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
           <div>{name}</div>
         </button>
       </Content>
-      <DropdownContent isOpen={isOpen}>
+      <DropdownContent n={values.length} isOpen={isOpen}>
         {values.map((value) => (
           <Button
             filtered={filters[value]}
