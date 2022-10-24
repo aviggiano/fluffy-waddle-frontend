@@ -72,19 +72,19 @@ const Dashboard: NextPage<Props> = ({ header, rows }: Props) => {
               <DropdownFilter
                 key="check"
                 filter="check"
-                name="Check"
+                label="Check"
                 values={CheckFilters}
               />
               <DropdownFilter
                 key="confidence"
                 filter="confidence"
-                name="Confidence"
+                label="Confidence"
                 values={ConfidenceFilters}
               />
               <DropdownFilter
                 key="impact"
                 filter="impact"
-                name="Impact"
+                label="Impact"
                 values={ImpactFilters}
               />
             </Filters>
@@ -102,7 +102,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await connect();
   const { query } = context;
 
-  const from = Math.max(Number(query.from || 0), 0);
+  const from = Math.max(Number(query.from || 1), 1);
   const to = Math.max(
     Math.min(Number(query.to || PAGINATION_MIN - 1), from + PAGINATION_MAX - 1),
     from + PAGINATION_MIN - 1
@@ -176,6 +176,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const header = Object.keys(reports[0] || {});
   const rows = reports;
+  console.log("Returned", reports.length, "reports");
 
   return {
     props: {

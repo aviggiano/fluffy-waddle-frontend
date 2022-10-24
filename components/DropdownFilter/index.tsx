@@ -8,16 +8,18 @@ import QueryContext from "../../contexts/Query";
 
 interface Props {
   filter: string;
-  name: string;
+  label: string;
   values: string[];
 }
 
-const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
+const DropdownFilter: React.FC<Props> = ({ filter, label, values }: Props) => {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const context = useContext(QueryContext);
-  const valuesFromQuery = (context as any)[filter];
-  const setter = (context as any)[`set${name}`];
+  const { query, setQuery } = context;
+  const valuesFromQuery = (query as unknown as Record<string, string[]>)[
+    filter
+  ];
   const router = useRouter();
   const filtersMap = (valuesFromQuery || [])
     .map((e: string) => ({ [e]: true }))
@@ -36,18 +38,21 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
       ...filters,
       [value]: !filters[value],
     };
-    const query = Object.keys(newFilters).filter((e) => newFilters[e]);
+    const array = Object.keys(newFilters).filter((e) => newFilters[e]);
     setFilters(newFilters);
-    setter(query);
-
-    const route = router.asPath.replace(/\?.*/, "");
-    router.push({
-      pathname: route,
-      query: {
-        ...router.query,
-        [filter]: query.join(","),
-      },
+    setQuery({
+      ...query,
+      [filter]: array,
     });
+
+    // const route = router.asPath.replace(/\?.*/, "");
+    // router.push({
+    //   pathname: route,
+    //   query: {
+    //     ...router.query,
+    //     [filter]: array.join(","),
+    //   },
+    // });
   };
 
   useEffect(() => {
@@ -67,7 +72,7 @@ const DropdownFilter: React.FC<Props> = ({ filter, name, values }: Props) => {
       <Content>
         <button onClick={() => setIsOpen(!isOpen)}>
           <Filter />
-          <div>{name}</div>
+          <div>{label}</div>
         </button>
       </Content>
       <DropdownContent n={values.length} isOpen={isOpen}>

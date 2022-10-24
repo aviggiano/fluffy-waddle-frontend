@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { queryTypes, useQueryState } from "next-usequerystate";
+import { queryTypes, useQueryStates } from "next-usequerystate";
 
 interface Query {
   from?: number;
@@ -17,14 +17,11 @@ interface Query {
   check: string[];
   confidence: string[];
   impact: string[];
+}
 
-  setFrom: (from: number) => void;
-  setTo: (to: number) => void;
-  setSearch: (search: string) => void;
-
-  setCheck: (check: string[]) => void;
-  setConfidence: (confidence: string[]) => void;
-  setImpact: (impact: string[]) => void;
+interface IQuery {
+  query: Query;
+  setQuery: (query: Query) => void;
 
   clearFilters: () => void;
   hasFilters: boolean;
@@ -33,59 +30,45 @@ interface Query {
 export const PAGINATION_MIN = 10;
 export const PAGINATION_MAX = 100;
 
-const QueryContext = createContext<Query>({} as Query);
+const QueryContext = createContext<IQuery>({} as IQuery);
 
 export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const router = useRouter();
 
-  const [from, setFrom] = useQueryState(
-    "from",
-    queryTypes.integer.withDefault(0)
-  );
-  const [to, setTo] = useQueryState(
-    "to",
-    queryTypes.integer.withDefault(PAGINATION_MIN)
-  );
-  const [search, setSearch] = useQueryState<string>(
-    "search",
-    queryTypes.string.withDefault("")
-  );
-  const [check, setCheck] = useQueryState<string[]>(
-    "check",
-    queryTypes.array(queryTypes.string).withDefault([])
-  );
-  const [confidence, setConfidence] = useQueryState<string[]>(
-    "check",
-    queryTypes.array(queryTypes.string).withDefault([])
-  );
-  const [impact, setImpact] = useQueryState<string[]>(
-    "impact",
-    queryTypes.array(queryTypes.string).withDefault([])
-  );
+  const [query, setQuery] = useQueryStates({
+    from: queryTypes.integer.withDefault(0),
+    to: queryTypes.integer.withDefault(PAGINATION_MIN),
+    search: queryTypes.string.withDefault(""),
+    check: queryTypes.array(queryTypes.string).withDefault([]),
+    confidence: queryTypes.array(queryTypes.string).withDefault([]),
+    impact: queryTypes.array(queryTypes.string).withDefault([]),
+  });
 
   const [route] = useState(router.asPath);
 
   const clearFilters = useCallback(() => {
-    setFrom(0);
-    setTo(PAGINATION_MIN);
-    setSearch("");
-    setCheck([]);
-    setConfidence([]);
-    setImpact([]);
-  }, [setFrom, setTo, setSearch, setCheck, setConfidence, setImpact]);
+    setQuery({
+      from: 0,
+      to: PAGINATION_MIN,
+      search: null,
+      check: [],
+      confidence: [],
+      impact: [],
+    });
+  }, [setQuery]);
 
   const hasFilters =
-    check.length > 0 ||
-    confidence.length > 0 ||
-    impact.length > 0 ||
-    search.length > 0;
+    query.check.length > 0 ||
+    query.confidence.length > 0 ||
+    query.impact.length > 0 ||
+    query.search.length > 0;
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       const newRoute = url.replace(/\?.*/, "");
       if (newRoute !== route) {
         console.log({ url, route, newRoute });
-        // clearFilters();
+        clearFilters();
       }
     };
     router.events.on("routeChangeStart", handleRouteChange);
@@ -97,18 +80,8 @@ export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <QueryContext.Provider
       value={{
-        from,
-        setFrom,
-        to,
-        setTo,
-        search,
-        setSearch,
-        check,
-        setCheck,
-        confidence,
-        setConfidence,
-        impact,
-        setImpact,
+        query,
+        setQuery,
         clearFilters,
         hasFilters,
       }}

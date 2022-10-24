@@ -9,14 +9,12 @@ const ClearFilters: React.FC = () => {
   const { clearFilters, hasFilters } = useContext(QueryContext);
   const router = useRouter();
   const onClick = () => {
-    const route = router.asPath.replace(/\?.*/, "");
     clearFilters();
-    router.push({
-      pathname: route,
-    });
+    // const route = router.asPath.replace(/\?.*/, "");
+    // router.push({
+    //   pathname: route,
+    // });
   };
-
-  console.log({ hasFilters });
 
   return (
     <Container hasFilters={hasFilters}>
