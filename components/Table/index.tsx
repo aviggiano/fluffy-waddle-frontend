@@ -55,15 +55,22 @@ const isId = (column: string): boolean => column === "id";
 
 const formatId = (value: string, ...rest: unknown[]) => {
   const route = rest[0];
-  return (
-    <Link href={`${route}/${value}`}>
-      <a href={`${route}/${value}`}>
+  const href = route === "/" || route === "/report" ? `/reports/${value}` : "";
+  return href ? (
+    <Link
+      href={{
+        pathname: "/reports/[reportId]",
+        query: { reportId: value },
+      }}
+    >
+      <a href={href}>
         <span>{value}</span>
       </a>
     </Link>
+  ) : (
+    <span>{value}</span>
   );
 };
-
 const isMarkdown = (column: string): boolean => column === "markdown";
 
 const formatMarkdown = (value: string) => {

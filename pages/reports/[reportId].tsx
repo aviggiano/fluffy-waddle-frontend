@@ -21,7 +21,6 @@ const ReportPage: NextPage<Report> = (report: Report) => {
       confidence: detector.confidence,
       markdown: detector.markdown,
     })) || [];
-  console.log(rows[rows.length - 2]);
   const header = Object.keys(rows![0]);
   return (
     <div>
