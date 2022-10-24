@@ -3,7 +3,6 @@ import { Button, Container, Content, DropdownContent } from "./styles";
 import Filter from "../../public/images/filter.svg";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Confidence, Impact } from "../Table/styles";
-import { useRouter } from "next/router";
 import QueryContext from "../../contexts/Query";
 
 interface Props {
@@ -17,11 +16,8 @@ const DropdownFilter: React.FC<Props> = ({ filter, label, values }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const context = useContext(QueryContext);
   const { query, setQuery } = context;
-  const valuesFromQuery = (query as unknown as Record<string, string[]>)[
-    filter
-  ];
-  const router = useRouter();
-  const filtersMap = (valuesFromQuery || [])
+  const filtersArray = (query as unknown as Record<string, string[]>)[filter];
+  const filtersMap = (filtersArray || [])
     .map((e: string) => ({ [e]: true }))
     .reduce(
       (a: Record<string, boolean>, b: Record<string, boolean>) => ({
@@ -30,7 +26,6 @@ const DropdownFilter: React.FC<Props> = ({ filter, label, values }: Props) => {
       }),
       {}
     );
-  console.log(filter);
   const [filters, setFilters] = useState<Record<string, boolean>>(filtersMap);
 
   const setFilter = (value: string) => {
@@ -44,15 +39,6 @@ const DropdownFilter: React.FC<Props> = ({ filter, label, values }: Props) => {
       ...query,
       [filter]: array,
     });
-
-    // const route = router.asPath.replace(/\?.*/, "");
-    // router.push({
-    //   pathname: route,
-    //   query: {
-    //     ...router.query,
-    //     [filter]: array.join(","),
-    //   },
-    // });
   };
 
   useEffect(() => {
