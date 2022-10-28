@@ -7,11 +7,12 @@ import { useRouter } from "next/router";
 import debounce from "../../services/debounce";
 
 const Searchbar: React.FC = () => {
-  const { search, setSearch } = useContext(QueryContext);
+  const { query, setQuery } = useContext(QueryContext);
   const router = useRouter();
 
   const route = router.asPath.replace(/\?.*/, "");
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedRouterPush = useCallback(
     debounce((nextValue) =>
       router.push({
@@ -22,12 +23,15 @@ const Searchbar: React.FC = () => {
         },
       })
     ),
-    [router, route]
+    [router, route, debounce]
   );
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newSearch = e.target.value;
-    setSearch(newSearch);
+    setQuery({
+      ...query,
+      search: newSearch,
+    });
     debouncedRouterPush(newSearch as never);
   };
 
@@ -38,7 +42,7 @@ const Searchbar: React.FC = () => {
         <input
           type="text"
           placeholder="Search..."
-          value={search}
+          value={query.search}
           onChange={onChange}
         />
       </Content>
