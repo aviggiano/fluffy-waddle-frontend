@@ -3,7 +3,6 @@ import React, {
   createContext,
   PropsWithChildren,
   useCallback,
-  useEffect,
   useState,
 } from "react";
 import { queryTypes, useQueryStates } from "next-usequerystate";
@@ -63,19 +62,19 @@ export const QueryProvider: React.FC<PropsWithChildren> = ({ children }) => {
     query.impact.length > 0 ||
     query.search.length > 0;
 
-  useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      const newRoute = url.replace(/\?.*/, "");
-      if (newRoute !== route) {
-        console.log({ url, route, newRoute });
-        clearFilters();
-      }
-    };
-    router.events.on("routeChangeStart", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, [route, router.events, clearFilters]);
+  // useEffect(() => {
+  //   const handleRouteChange = (url: string) => {
+  //     const newRoute = url.replace(/\?.*/, "");
+  //     if (newRoute !== route) {
+  //       console.log({ url, route, newRoute });
+  //       clearFilters();
+  //     }
+  //   };
+  //   router.events.on("routeChangeStart", handleRouteChange);
+  //   return () => {
+  //     router.events.off("routeChangeStart", handleRouteChange);
+  //   };
+  // }, [route, router.events, clearFilters]);
 
   return (
     <QueryContext.Provider
